@@ -15,6 +15,7 @@ export class MainLogicService {
   avgPurpleChance = 0.12
 
   count = 0;
+  losePity = false;
 
   pullArray:PullItem[] = []
   allArray:PullItem[] = []
@@ -86,10 +87,16 @@ export class MainLogicService {
   }
 
   pullGold() {
-    if (this.randomizer() < 0.5) {
+    if (this.losePity === true) {
       this.pullArray.push(this.dataPoolService.specialItem)
+      this.losePity = false
     } else {
-      this.pullArray.push(this.randomizeStandardGold())
+      if (this.randomizer() < 0.5) {
+        this.pullArray.push(this.dataPoolService.specialItem)
+      } else {
+        this.losePity = true
+        this.pullArray.push(this.randomizeStandardGold())
+      }
     }
   }
 
